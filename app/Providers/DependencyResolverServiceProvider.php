@@ -4,10 +4,46 @@
 namespace App\Providers;
 
 
+use App\Repository\AddressRepository;
+use App\Repository\ClientPaymentGymRepository;
+use App\Repository\ClientRepository;
+use App\Repository\EmployeeRepository;
+use App\Repository\GymRepository;
+use App\Repository\Interfaces\AddressRepositoryInterface;
+use App\Repository\Interfaces\ClientPaymentGymRepositoryInterface;
+use App\Repository\Interfaces\ClientRepositoryInterface;
+use App\Repository\Interfaces\EmployeeRepositoryInterface;
+use App\Repository\Interfaces\GymRepositoryInterface;
+use App\Repository\Interfaces\PaymentRepositoryInterface;
 use App\Repository\Interfaces\PersonRepositoryInterface;
+use App\Repository\Interfaces\RolesCrudRepositoryInterface;
+use App\Repository\Interfaces\TrainRepositoryInterface;
+use App\Repository\Interfaces\UserCrudRepositoryInterface;
+use App\Repository\PaymentRepository;
 use App\Repository\PersonRepository;
+use App\Repository\RolesRepository;
+use App\Repository\TrainRepository;
+use App\Repository\UserRepository;
+use App\Service\AddressService;
+use App\Service\ClientPaymentGymService;
+use App\Service\ClientService;
+use App\Service\GymService;
+use App\Service\Interfaces\AddressServiceInterface;
+use App\Service\Interfaces\ClientPaymentGymServiceInterface;
+use App\Service\Interfaces\ClientServiceInterface;
+use App\Service\Interfaces\EmployeeService;
+use App\Service\Interfaces\EmployeeServiceInterface;
+use App\Service\Interfaces\GymServiceInterface;
+use App\Service\Interfaces\PaymentServiceInterface;
 use App\Service\Interfaces\PersonServiceInterface;
+use App\Service\Interfaces\RolesServiceInterface;
+use App\Service\Interfaces\TrainServiceInterface;
+use App\Service\Interfaces\UserServiceInterface;
+use App\Service\PaymentService;
 use App\Service\PersonService;
+use App\Service\RolesService;
+use App\Service\TrainService;
+use App\Service\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class DependencyResolverServiceProvider extends ServiceProvider
@@ -21,6 +57,14 @@ class DependencyResolverServiceProvider extends ServiceProvider
     {
         $this->personConfigSingleton();
         $this->trainConfigSingleton();
+        $this->clientConfigSingleton();
+        $this->employeeConfigSingleton();
+        $this->gymConfingSingleton();
+        $this->addressConfigSingleton();
+        $this->userConfigSingleton();
+        $this->rolesConfigSingleton();
+        $this->paymentConfigSingleton();
+        $this->clientPaymentGymSingleton();
 
     }
 
@@ -35,21 +79,42 @@ class DependencyResolverServiceProvider extends ServiceProvider
         $this->app->singleton(TrainServiceInterface::class, TrainService::class);
     }
 
-    private function clientConfigSingleton(){}
+    private function clientConfigSingleton(){
+        $this->app->singleton(ClientRepositoryInterface::class, ClientRepository::class);
+        $this->app->singleton(ClientServiceInterface::class, ClientService::class);
 
-    private function employeeConfigSingleton(){}
+    }
 
-    private function gymConfingSingleton(){}
+    private function employeeConfigSingleton(){
+        $this->app->singleton(EmployeeRepositoryInterface::class, EmployeeRepository::class);
+        $this->app->singleton(EmployeeServiceInterface::class, EmployeeService::class);
+    }
 
-    private function addressConfigSingleton(){}
+    private function gymConfingSingleton(){
+        $this->app->singleton(GymRepositoryInterface::class, GymRepository::class);
+        $this->app->singleton(GymServiceInterface::class, GymService::class);}
 
-    private function userRoleConfigSingleton(){}
+    private function addressConfigSingleton(){
+        $this->app->singleton(AddressRepositoryInterface::class, AddressRepository::class);
+        $this->app->singleton(AddressServiceInterface::class, AddressService::class);
+    }
 
-    private function userConfigSingleton(){}
+    private function rolesConfigSingleton(){
+        $this->app->singleton(RolesCrudRepositoryInterface::class, RolesRepository::class);
+        $this->app->singleton(RolesServiceInterface::class, RolesService::class);}
 
-    private function paymentConfigSingleton(){}
+    private function userConfigSingleton(){
+        $this->app->singleton(UserCrudRepositoryInterface::class, UserRepository::class);
+        $this->app->singleton(UserServiceInterface::class, UserService::class);
+    }
 
-    private function clientPaymentGym(){}
+    private function paymentConfigSingleton(){
+        $this->app->singleton(PaymentRepositoryInterface::class, PaymentRepository::class);
+        $this->app->singleton(PaymentServiceInterface::class, PaymentService::class);}
+
+    private function clientPaymentGymSingleton(){
+        $this->app->singleton(ClientPaymentGymRepositoryInterface::class, ClientPaymentGymRepository::class);
+        $this->app->singleton(ClientPaymentGymServiceInterface::class, ClientPaymentGymService::class);}
 
 
 }

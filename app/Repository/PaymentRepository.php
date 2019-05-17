@@ -4,9 +4,9 @@
 namespace App\Repository;
 
 
-use App\Repository\Interfaces\PaymentCrudRepository;
+use App\Repository\Interfaces\PaymentRepositoryInterface;
 
-class PaymentRepository extends CrudBaseRepository implements PaymentCrudRepository
+class PaymentRepository extends CrudBaseRepository implements PaymentRepositoryInterface
 {
 
 }
