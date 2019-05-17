@@ -25,12 +25,24 @@ class CrudBaseRepository implements CrudRepositoryInterface
 
     function update($id, $entity)
     {
-        // TODO: Implement update() method.
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->update($this->entityName)
+            ->set($entity)
+            ->where($id);
+
+        return $qb->getQuery()->getResult();
     }
 
     function findById($id)
     {
-        // TODO: Implement findById() method.
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('c')
+            ->from($this->entityName, 'c')
+            ->where($id);
+
+        return $qb->getQuery()->getResult();
     }
 
     function findAll()
@@ -43,8 +55,15 @@ class CrudBaseRepository implements CrudRepositoryInterface
         return $qb->getQuery()->getResult();
     }
 
-    function search($parameters)
+
+    function delete($id)
     {
-        // TODO: Implement search() method.
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->delete()
+            ->from($this->entityName, 'c')
+            ->where($id);
+
+        return $qb->getQuery()->getResult();
     }
 }
