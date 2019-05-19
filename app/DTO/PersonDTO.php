@@ -4,6 +4,8 @@
 namespace App\DTO;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class PersonDTO
 {
     public $id;
@@ -13,4 +15,9 @@ class PersonDTO
     public $cpf;
     public $rg;
     public $birthday;
+
+    public function __construct()
+    {
+        $this->address = new ArrayCollection();
+    }
 }

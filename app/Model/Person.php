@@ -44,6 +44,11 @@ class Person
      */
     protected $address;
 
+    /**
+     * @ORM\Column(name="birthday", type="date")
+     */
+    protected $birthDay;
+
     public function __construct()
     {
         $this->address = new ArrayCollection();
@@ -79,22 +84,6 @@ class Person
     public function setName($name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param mixed $code
-     */
-    public function setCode($code): void
-    {
-        $this->code = $code;
     }
 
     /**
@@ -161,6 +150,23 @@ class Person
         $this->address = $address;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBirthDay()
+    {
+        return $this->birthDay;
+    }
+
+    /**
+     * @param mixed $birthDay
+     */
+    public function setBirthDay($birthDay): void
+    {
+        $this->birthDay = $birthDay;
+    }
+
+    
 
 
 

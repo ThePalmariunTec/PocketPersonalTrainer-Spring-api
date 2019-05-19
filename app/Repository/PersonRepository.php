@@ -10,17 +10,20 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class PersonRepository extends CrudBaseRepository implements PersonRepositoryInterface
 {
+    private $entityManager;
+
     public function __construct(EntityManagerInterface $entityManager)
-    {
-        parent::__construct($entityManager, Person::class);
-    }
+     {
+         $this->entityManager;
+       parent::__construct($entityManager, Person::class);
+     }
 
     public function findAllPersonsWithAddress()
     {
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb->select('p')
-            ->from($this->entityName, 'p');
+            ->from($this->getEntityName(), 'p');
 
         return $qb->getQuery()->getResult();
     }

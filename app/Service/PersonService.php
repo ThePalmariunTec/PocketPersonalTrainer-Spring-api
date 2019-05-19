@@ -7,22 +7,30 @@ namespace App\Service;
 
 
 use App\DTO\PersonDTO;
+use App\Model\Person;
+use App\Repository\Interfaces\AddressRepositoryInterface;
 use App\Repository\Interfaces\PersonRepositoryInterface;
 use App\Service\Interfaces\PersonServiceInterface;
+use Carbon\Carbon;
+use Illuminate\Http\Response;
 
 class PersonService implements PersonServiceInterface
 {
 
     private $repository;
+    private $addressRepository;
 
-    public function __construct(PersonRepositoryInterface $repository)
+    public function __construct(PersonRepositoryInterface $repository, AddressRepositoryInterface $addressRepository)
     {
         $this->repository = $repository;
+        $this->addressRepository = $addressRepository;
     }
 
-    function insert($entity)
+    function insert($dto)
     {
-        // TODO: Implement insert() method.
+        $person = new Person();
+        $this->repository->insert($this->personDTOtoPersonEntity($dto,$person));
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function update($id, $entity)
@@ -54,4 +62,22 @@ class PersonService implements PersonServiceInterface
     {
         // TODO: Implement search() method.
     }
+
+    private function personDTOtoPersonEntity(PersonDTO $dto, Person $entity) : Person
+    {
+        $entity->setCpf($dto->cpf);
+        $entity->setName($dto->name);
+        $entity->setPhone($dto->phone);
+        $entity->setRg($dto->rg);
+        $entity->setBirthDay(Carbon::parse($dto->birthday));
+        $addresses = array();
+        foreach ($dto->address as $address) {
+            $objAdress = $this->addressRepository->findById($address->id);
+            array_push($addresses, $objAdress);
+        }
+
+        $entity->setAddress($addresses);
+        return $entity;
+    }
+
 }

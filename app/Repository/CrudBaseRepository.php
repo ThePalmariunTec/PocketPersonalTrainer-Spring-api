@@ -5,44 +5,59 @@ namespace App\Repository;
 
 use App\Repository\Interfaces\CrudRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\QueryException;
 
 class CrudBaseRepository implements CrudRepositoryInterface
 {
-    public $entityManager;
-    public $entityName;
+    private $entityManager;
+    private $entityName;
 
 
     public function __construct(EntityManagerInterface $entityManager, string $entityName)
-{
-    $this->entityManager = $entityManager;
-    $this->entityName = $entityName;
-}
+    {
+        $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
+    }
+
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
 
     function insert($entity)
     {
-        // TODO: Implement insert() method.
+        $this->entityManager->beginTransaction();
+        try {
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (QueryException $exception) {
+            $this->entityManager->rollback();
+            throw new QueryException('Falha ao inserir');
+        }
     }
 
-    function update($id, $entity)
+    function update($entity)
     {
-        $qb = $this->entityManager->createQueryBuilder();
-
-        $qb->update($this->entityName)
-            ->set($entity)
-            ->where($id);
-
-        return $qb->getQuery()->getResult();
+        $this->entityManager->beginTransaction();
+      try {
+          $this->entityManager->merge($entity);
+          $this->entityManager->flush();
+          $this->entityManager->commit();
+      } catch (QueryException $exception) {
+          $this->entityManager->rollback();
+          throw new QueryException('Falha ao atualizar');
+      }
     }
 
     function findById($id)
     {
-        $qb = $this->entityManager->createQueryBuilder();
-
-        $qb->select('c')
-            ->from($this->entityName, 'c')
-            ->where($id);
-
-        return $qb->getQuery()->getResult();
+        return $this->entityManager->find($this->entityName, $id);
     }
 
     function findAll()
@@ -50,7 +65,7 @@ class CrudBaseRepository implements CrudRepositoryInterface
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb->select('c')
-            ->from($this->entityName, 'c');
+            ->from($this->getEntityName(), 'c');
 
         return $qb->getQuery()->getResult();
     }
@@ -58,12 +73,16 @@ class CrudBaseRepository implements CrudRepositoryInterface
 
     function delete($id)
     {
-        $qb = $this->entityManager->createQueryBuilder();
+        $this->entityManager->beginTransaction();
+        try {
+            $entity = $this->entityManager->find($this->entityName, $id);
+            $this->entityManager->remove($entity);
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (QueryException $exception) {
+            $this->entityManager->rollback();
+            throw new QueryException('Falha ao excluir');
+        }
 
-        $qb->delete()
-            ->from($this->entityName, 'c')
-            ->where($id);
-
-        return $qb->getQuery()->getResult();
     }
 }
