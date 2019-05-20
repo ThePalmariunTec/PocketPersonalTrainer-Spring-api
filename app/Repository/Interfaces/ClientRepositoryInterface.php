@@ -4,7 +4,7 @@
 namespace App\Repository\Interfaces;
 
 
-interface ClientRepositoryInterface
+interface ClientRepositoryInterface extends CrudRepositoryInterface
 {
 
 }

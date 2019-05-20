@@ -7,13 +7,14 @@ namespace App\Http\Controllers\Person;
 use App\DTO\PersonDTO;
 use App\Http\Controllers\Controller;
 use App\Service\Interfaces\PersonServiceInterface;
+use App\Service\PersonService;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {
     private $service;
 
-    public function __construct(PersonServiceInterface $service)
+    public function __construct(PersonService $service)
     {
         $this->service = $service;
     }

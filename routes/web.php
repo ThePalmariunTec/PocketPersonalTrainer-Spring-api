@@ -12,7 +12,7 @@
 */
 
 $router->group(['prefix' => 'api/person'], function () use($router){
-   $router->get('/list/', 'Person\PersonController@findAll');
+   $router->get('/list', 'Person\PersonController@findAll');
    $router->post('/', 'Person\PersonController@insert');
 });
 

@@ -16,9 +16,9 @@ use App\Repository\Interfaces\EmployeeRepositoryInterface;
 use App\Repository\Interfaces\GymRepositoryInterface;
 use App\Repository\Interfaces\PaymentRepositoryInterface;
 use App\Repository\Interfaces\PersonRepositoryInterface;
-use App\Repository\Interfaces\RolesCrudRepositoryInterface;
+use App\Repository\Interfaces\RolesRepositoryInterface;
 use App\Repository\Interfaces\TrainRepositoryInterface;
-use App\Repository\Interfaces\UserCrudRepositoryInterface;
+use App\Repository\Interfaces\UserRepositoryInterface;
 use App\Repository\PaymentRepository;
 use App\Repository\PersonRepository;
 use App\Repository\RolesRepository;
@@ -100,11 +100,11 @@ class DependencyResolverServiceProvider extends ServiceProvider
     }
 
     private function rolesConfigSingleton(){
-        $this->app->singleton(RolesCrudRepositoryInterface::class, RolesRepository::class);
+        $this->app->singleton(RolesRepositoryInterface::class, RolesRepository::class);
         $this->app->singleton(RolesServiceInterface::class, RolesService::class);}
 
     private function userConfigSingleton(){
-        $this->app->singleton(UserCrudRepositoryInterface::class, UserRepository::class);
+        $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
         $this->app->singleton(UserServiceInterface::class, UserService::class);
     }
 

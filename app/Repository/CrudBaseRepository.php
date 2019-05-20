@@ -9,8 +9,8 @@ use Doctrine\ORM\Query\QueryException;
 
 class CrudBaseRepository implements CrudRepositoryInterface
 {
-    private $entityManager;
-    private $entityName;
+    public $entityManager;
+    public $entityName;
 
 
     public function __construct(EntityManagerInterface $entityManager, string $entityName)
@@ -22,11 +22,6 @@ class CrudBaseRepository implements CrudRepositoryInterface
     public function getEntityName()
     {
         return $this->entityName;
-    }
-
-    public function getEntityManager()
-    {
-        return $this->entityManager;
     }
 
     function insert($entity)
@@ -65,7 +60,7 @@ class CrudBaseRepository implements CrudRepositoryInterface
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb->select('c')
-            ->from($this->getEntityName(), 'c');
+            ->from($this->entityName, 'c');
 
         return $qb->getQuery()->getResult();
     }

@@ -8,8 +8,8 @@ namespace App\Service;
 
 use App\DTO\PersonDTO;
 use App\Model\Person;
-use App\Repository\Interfaces\AddressRepositoryInterface;
-use App\Repository\Interfaces\PersonRepositoryInterface;
+use App\Repository\AddressRepository;
+use App\Repository\PersonRepository;
 use App\Service\Interfaces\PersonServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
@@ -20,7 +20,7 @@ class PersonService implements PersonServiceInterface
     private $repository;
     private $addressRepository;
 
-    public function __construct(PersonRepositoryInterface $repository, AddressRepositoryInterface $addressRepository)
+    public function __construct(PersonRepository $repository, AddressRepository $addressRepository)
     {
         $this->repository = $repository;
         $this->addressRepository = $addressRepository;
