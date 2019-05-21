@@ -5,8 +5,11 @@ namespace App\Service;
 
 
 use App\DTO\TrainDTO;
+use App\Model\Train;
 use App\Repository\Interfaces\TrainRepositoryInterface;
 use App\Service\Interfaces\TrainServiceInterface;
+use Doctrine\ORM\Query\QueryException;
+use Illuminate\Http\Response;
 
 class TrainService implements TrainServiceInterface
 {
@@ -14,22 +17,38 @@ class TrainService implements TrainServiceInterface
 
     public function __construct(TrainRepositoryInterface $repository)
     {
-        $this->$repository = $repository;
+        $this->repository = $repository;
     }
 
-    function insert($entity)
+    function insert($dto)
     {
-        // TODO: Implement insert() method.
+        try {
+            $train = new Train();
+            $this->repository->insert($this->trainDTOtoEntity($dto, $train));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
-    function update($id, $entity)
+    function update($dto)
     {
-        // TODO: Implement update() method.
+        try {
+            $train = new Train();
+            $this->repository->update($this->trainDTOtoEntity($dto, $train));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->repository->findById($id);
     }
 
     function findAll()
@@ -48,8 +67,31 @@ class TrainService implements TrainServiceInterface
         return $dados;
     }
 
-    function search($parameters)
+    function search($dto)
     {
-        // TODO: Implement search() method.
+        $train = new Train();
+        $this->repository->findBy($this->trainDTOtoEntity($dto, $train));
+    }
+
+    function delete($id)
+    {
+        try {
+            $this->repository->delete($id);
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    private function trainDTOtoEntity(TrainDTO $dto, Train $entity): Train
+    {
+        $entity->setId($dto->id);
+        $entity->setName($dto->name);
+        $entity->setDescription($dto->desciption);
+
+
+        return $entity;
     }
 }

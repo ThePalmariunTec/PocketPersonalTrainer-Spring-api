@@ -4,33 +4,104 @@
 namespace App\Service;
 
 
+use App\Model\Roles;
+use App\Repository\RolesRepository;
+use App\Repository\UserRepository;
 use App\Service\Interfaces\BaseServiceInterface;
+use Doctrine\ORM\Query\QueryException;
+use Illuminate\Http\Response;
 
 class RolesService implements BaseServiceInterface
 {
 
-    function insert($entity)
+    private $repositoy;
+    private $userRepository;
+
+    public function __construct(RolesRepository $rolesRepository, UserRepository $userRepository)
     {
-        // TODO: Implement insert() method.
+        $this->repositoy = $rolesRepository;
+        $this->userRepository = $userRepository;
     }
 
-    function update($id, $entity)
+    function insert($dto)
     {
-        // TODO: Implement update() method.
+        try {
+            $roles = new Roles();
+            $this->repositoy->insert($this->rolesDTOtoEntity($dto,$roles));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    function update($dto)
+    {
+        try {
+            $roles = new Roles();
+            $this->repositoy->update($this->rolesDTOtoEntity($dto,$roles));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->repositoy->findById($id);
     }
 
     function findAll()
     {
-        // TODO: Implement findAll() method.
+        $objs = $this->repository->findAll();
+        $dados = array();
+        foreach ($objs as $obj){
+            $dto = new RolesDTO();
+            $dto->id = $obj->getId();
+            $dto->rating = $obj->getRating();
+            $dto->description = $obj->getDescription();
+            $dto->user = $obj->getUser();
+
+            array_push($dados, $dto);
+        }
+
+        return $dados;
     }
 
-    function search($parameters)
+    function delete($id)
     {
-        // TODO: Implement search() method.
+
+        try {
+            $this->repositoy->delete($id);
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    function search($dto)
+    {
+        $roles = new Roles();
+        return $this->repositoy->findBy($this->rolesDTOtoEntity($dto, $roles));
+    }
+
+    private function rolesDTOtoEntity($dto, Roles $entity): Roles
+    {
+        $entity->setId($dto->id);
+        $entity->setRating($dto->rating);
+        $entity->setDescription($dto->description);
+        $user = array();
+        foreach ($dto->$user as $user){
+            $objUser = $this->userRepository->findById($user->id);
+            array_push($user, $objUser);
+        }
+        $entity->setUser($user);
+
+        return $entity;
     }
 }

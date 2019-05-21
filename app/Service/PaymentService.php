@@ -4,33 +4,94 @@
 namespace App\Service;
 
 
+use App\DTO\PaymentDTO;
+use App\Model\Payment;
+use App\Repository\PaymentRepository;
 use App\Service\Interfaces\BaseServiceInterface;
+use Doctrine\ORM\Query\QueryException;
+use Illuminate\Http\Response;
 
 class PaymentService implements BaseServiceInterface
 {
+    private $repository;
 
-    function insert($entity)
+    public function __construct(PaymentRepository $paymentRepository)
     {
-        // TODO: Implement insert() method.
+        $this->repository = $paymentRepository;
     }
 
-    function update($id, $entity)
+    function insert($dto)
     {
-        // TODO: Implement update() method.
+        try {
+            $payment = new Payment();
+            $this->repository->insert($this->paymentDTOtoEntity($dto,$payment));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    function update($dto)
+    {
+        try {
+            $payment = new Payment();
+            $this->repository->update($this->paymentDTOtoEntity($dto,$payment));
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->repository->findById($id);
     }
 
     function findAll()
     {
-        // TODO: Implement findAll() method.
+
+        $objs = $this->repository->findAll();
+        $dados = array();
+        foreach ($objs as $obj){
+            $dto = new PaymentDTO();
+            $dto->id = $obj->getId();
+            $dto->value = $obj->getValue();
+            $dto->pay = $obj->getPay();
+
+            array_push($dados, $dto);
+        }
+
+        return $dados;
     }
 
-    function search($parameters)
+    function search($dto)
     {
-        // TODO: Implement search() method.
+        $payment = new Payment();
+        return $this->repository->findBy($this->paymentDTOtoEntity($dto, $payment));
+    }
+
+    function delete($id)
+    {
+        try {
+            $this->repository->delete($id);
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    private function paymentDTOtoEntity(PaymentDTO $dto, Payment $entity): Payment
+    {
+        $entity->setId($dto->id);
+        $entity->setValue($dto->value);
+        $entity->setPay($dto->pay);
+
+        return $entity;
     }
 }

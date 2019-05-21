@@ -15,7 +15,7 @@ class Employee
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer")
      */
-    protected $is;
+    protected $id;
 
     /**
      * @ORM\Column(name="document", type="string")
@@ -47,17 +47,17 @@ class Employee
     /**
      * @return mixed
      */
-    public function getIs()
+    public function getId()
     {
-        return $this->is;
+        return $this->id;
     }
 
     /**
      * @param mixed $is
      */
-    public function setIs($is): void
+    public function setId($id): void
     {
-        $this->is = $is;
+        $this->id = $id;
     }
 
     /**

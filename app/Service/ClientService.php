@@ -10,6 +10,7 @@ use App\Repository\ClientRepository;
 use App\Repository\PersonRepository;
 use App\Repository\UserRepository;
 use App\Service\Interfaces\ClientServiceInterface;
+use Doctrine\ORM\Query\QueryException;
 use Illuminate\Http\Response;
 
 class ClientService implements ClientServiceInterface
@@ -29,15 +30,23 @@ class ClientService implements ClientServiceInterface
 
     function insert($dto)
     {
-        $client = new Client();
-        $this->repository->insert($this->clientDTOtoEntity($dto, $client));
+        try {
+            $client = new Client();
+            $this->repository->insert($this->clientDTOtoEntity($dto, $client));
+        } catch (QueryException $e) {
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
         return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function update($dto)
     {
-        $client = new Client();
-        $this->repository->update($this->clientDTOtoEntity($dto, $client));
+        try {
+            $client = new Client();
+            $this->repository->update($this->clientDTOtoEntity($dto, $client));
+        } catch (QueryException $e) {
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
         return response()->json('ok', Response::HTTP_CREATED);
     }
 
@@ -55,16 +64,19 @@ class ClientService implements ClientServiceInterface
             $dto->id = $obj->getId();
             $dto->person = $obj->getPerson();
             $dto->user = $obj->getUser();
+            array_push($dados, $dto);
         }
+
+        return $dados;
     }
 
     function search($dto)
     {
         $client = new Client();
-        return $this->repository->findBy($this->personDTOtoPersonEntity($dto,$client));
+        return $this->repository->findBy($this->clientDTOtoEntity($dto,$client));
     }
 
-    private function clientDTOtoEntity(ClientDTO $dto, Client $entity){
+    private function clientDTOtoEntity(ClientDTO $dto, Client $entity):Client{
 
         $entity->setId($dto->id);
         $person = array();
@@ -85,7 +97,13 @@ class ClientService implements ClientServiceInterface
 
     function delete($id)
     {
-        $this->repository->delete($id);
+        try {
+            $this->repository->delete($id);
+        } catch (QueryException $e) {
+
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+
         return response()->json('ok', Response::HTTP_CREATED);
     }
 }

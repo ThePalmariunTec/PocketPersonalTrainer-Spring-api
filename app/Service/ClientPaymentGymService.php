@@ -91,9 +91,8 @@ class ClientPaymentGymService implements BaseServiceInterface
     function search($dto)
     {
         $clientPaymentGym = new ClientPaymentGym();
-        $dto = $this->repository->findBy($this->cluentPaymentGymDTOtoEntity($dto,$clientPaymentGym));
+        return $this->repository->findBy($this->cluentPaymentGymDTOtoEntity($dto,$clientPaymentGym));
 
-        return $dto;
     }
 
     private function cluentPaymentGymDTOtoEntity(ClientPaymentGymDTO $dto, ClientPaymentGym $entity): ClientPaymentGym

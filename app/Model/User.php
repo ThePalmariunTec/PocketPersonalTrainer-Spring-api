@@ -3,7 +3,6 @@
 
 namespace App\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
@@ -33,7 +32,7 @@ class User
     protected $email;
 
     /**
-     * @ORM\Column(name="role_id", type="integer")
+     * @ORM\OneToMany(targetEntity="App\Model\Roles", mappedBy="user")
      */
     protected $roles;
 
@@ -102,16 +101,81 @@ class User
     /**
      * @return mixed
      */
-    public function getUserRole()
+    public function getEmail()
     {
-        return $this->userRole;
+        return $this->email;
     }
 
     /**
-     * @param mixed $userRole
+     * @param mixed $email
      */
-    public function setUserRole($userRole): void
+    public function setEmail($email): void
     {
-        $this->userRole = $userRole;
+        $this->email = $email;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client): void
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmployee()
+    {
+        return $this->employee;
+    }
+
+    /**
+     * @param mixed $employee
+     */
+    public function setEmployee($employee): void
+    {
+        $this->employee = $employee;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGym()
+    {
+        return $this->gym;
+    }
+
+    /**
+     * @param mixed $gym
+     */
+    public function setGym($gym): void
+    {
+        $this->gym = $gym;
+    }
+
 }
