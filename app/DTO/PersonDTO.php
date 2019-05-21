@@ -15,6 +15,8 @@ class PersonDTO
     public $cpf;
     public $rg;
     public $birthday;
+    public $height;
+    public $weight;
 
     public function __construct()
     {

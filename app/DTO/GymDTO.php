@@ -4,6 +4,8 @@
 namespace App\DTO;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class GymDTO
 {
     public $id;
@@ -16,4 +18,9 @@ class GymDTO
 
     public $user;
 
+    public function __construct()
+    {
+        $this->address = new ArrayCollection();
+        $this->user = new ArrayCollection();
+    }
 }

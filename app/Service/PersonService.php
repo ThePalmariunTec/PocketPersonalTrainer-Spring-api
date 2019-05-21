@@ -81,6 +81,8 @@ class PersonService implements PersonServiceInterface
             $dto->rg = $obj->getRg();
             $dto->phone = $obj->getPhone();
             $dto->birthday = $obj->getBirthday();
+            $dto->height = $obj->getHeight();
+            $dto->weight = $obj->getWeight();
 
             array_push($dados, $dto);
         }
@@ -101,6 +103,8 @@ class PersonService implements PersonServiceInterface
         $entity->setPhone($dto->phone);
         $entity->setRg($dto->rg);
         $entity->setBirthDay(Carbon::parse($dto->birthday));
+        $entity->setHeigth($dto->height);
+        $entity->setWeight($dto->weight);
         $addresses = array();
         foreach ($dto->address as $address) {
             $objAdress = $this->addressRepository->findById($address->id);

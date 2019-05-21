@@ -49,6 +49,16 @@ class Person
      */
     protected $birthDay;
 
+    /**
+     * @ORM\Column(name="height", type="decimal")
+     */
+    protected $heigth;
+
+    /**
+     * @ORM\Column(name="weight", type="decimal")
+     */
+    protected $weight;
+
     public function __construct()
     {
         $this->address = new ArrayCollection();
@@ -166,9 +176,36 @@ class Person
         $this->birthDay = $birthDay;
     }
 
-    
+    /**
+     * @return mixed
+     */
+    public function getHeigth()
+    {
+        return $this->heigth;
+    }
 
+    /**
+     * @param mixed $heigth
+     */
+    public function setHeigth($heigth): void
+    {
+        $this->heigth = $heigth;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
 
+    /**
+     * @param mixed $weight
+     */
+    public function setWeight($weight): void
+    {
+        $this->weight = $weight;
+    }
 
 }
