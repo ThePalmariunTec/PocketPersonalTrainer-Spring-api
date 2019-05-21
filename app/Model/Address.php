@@ -46,6 +46,11 @@ class Address
     protected $person;
 
     /**
+     * @ORM\ManyToOne(targetEntity="gym",inversedBy="address", cascade={"persist", "merge", "remove"})
+     */
+    protected $gym;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -124,8 +129,6 @@ class Address
     {
         $this->uf = $uf;
     }
-
-
 
 
 }

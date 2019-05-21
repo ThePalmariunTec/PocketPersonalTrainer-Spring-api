@@ -3,20 +3,40 @@
 
 namespace App\Model;
 
-
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="client_payment_gym")
+ */
 class ClientPaymentGym
 {
-
-
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     */
     protected $id;
 
+    /**
+     * @ORM\Column(name="date_payment", type="date")
+     */
     protected $datePayment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Model\Client", mappedBy="client")
+     */
     protected $client;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Model\Payment", mappedBy="payment")
+     */
     protected $payment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Model\Gym", mappedBy="payment")
+     */
     protected $gym;
+
 
     public function __construct()
     {
@@ -105,5 +125,4 @@ class ClientPaymentGym
         $this->gym = $gym;
     }
 
-    
 }

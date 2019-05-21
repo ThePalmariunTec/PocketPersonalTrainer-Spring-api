@@ -38,6 +38,20 @@ class User
     protected $roles;
 
     /**
+     * @ORM\ManyToOne(targetEntity="client",inversedBy="user", cascade={"persist", "merge", "remove"})
+     */
+    protected $client;
+    /**
+     * @ORM\ManyToOne(targetEntity="employee",inversedBy="user", cascade={"persist", "merge", "remove"})
+     */
+    protected $employee;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="gym",inversedBy="user", cascade={"persist", "merge", "remove"})
+     */
+    protected $gym;
+
+    /**
      * @return mixed
      */
     public function getId()

@@ -68,7 +68,7 @@ class ClientService implements ClientServiceInterface
 
         $entity->setId($dto->id);
         $person = array();
-        foreach ($dto->$person as $person) {
+        foreach ($dto->person as $person) {
             $objPerson = $this->personRepository->findById($person->id);
             array_push($person, $objPerson);
         }

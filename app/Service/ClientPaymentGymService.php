@@ -7,6 +7,9 @@ namespace App\Service;
 use App\DTO\ClientPaymentGymDTO;
 use App\Model\ClientPaymentGym;
 use App\Repository\ClientPaymentGymRepository;
+use App\Repository\ClientRepository;
+use App\Repository\GymRepository;
+use App\Repository\PaymentRepository;
 use App\Service\Interfaces\BaseServiceInterface;
 use Doctrine\ORM\Query\QueryException;
 use Illuminate\Http\Response;
@@ -20,9 +23,13 @@ class ClientPaymentGymService implements BaseServiceInterface
     private $paymentRepository;
 
 
-    public function __construct(ClientPaymentGymRepository $repository)
+    public function __construct(ClientPaymentGymRepository $repository, ClientRepository $clientRepository,
+                                GymRepository $gymRepository, PaymentRepository $paymentRepository)
     {
         $this->repository = $repository;
+        $this->clientRepository = $clientRepository;
+        $this->gymRepository = $gymRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     function insert($dto)
@@ -69,9 +76,10 @@ class ClientPaymentGymService implements BaseServiceInterface
 
         foreach ($objs as $obj){
             $dto = new ClientPaymentGymDTO();
-            $dto->client_id = $obj->getClientId();
-            $dto->payment_id = $obj->getPaymentId();
-            $dto->gym_id = $obj->getGymId();
+
+            $dto->client = $obj->getClient();
+            $dto->payment = $obj->getPayment();
+            $dto->gym = $obj->getGym();
             $dto->date_payment = $obj->getDatePayment();
 
             array_push($dados, $dto);
@@ -88,19 +96,35 @@ class ClientPaymentGymService implements BaseServiceInterface
         return $dto;
     }
 
-    private function cluentPaymentGymDTOtoEntity(ClientPaymentGymDTO $dto, ClientPaymentGym $entity): ClientPaymentGym{
-        $entity->setClientId($dto->client_id);
+    private function cluentPaymentGymDTOtoEntity(ClientPaymentGymDTO $dto, ClientPaymentGym $entity): ClientPaymentGym
+    {
+        $entity->setId($dto->id);
         $entity->setDatePayment($dto->date_payment);
-        $entity->setGymId($dto->gym_id);
-        $entity->setPaymentId($dto->payment_id);
+        $gym = array();
+        foreach($dto->gym as $gym){
+            $objGym = $this->gymRepository->findById($gym->id);
+            array_push($gym, $objGym);
+        }
+        $entity->setGym($gym);
+        $client = array();
+        foreach($dto->client as $client){
+            $objClient = $this->gymRepository->findById($client->id);
+            array_push($client, $objClient);
+        }
+        $entity->setClient($client);
+        $payment = array();
+        foreach($dto->payment as $payment){
+            $objPayment = $this->paymentRepository->findById($payment->id);
+            array_push($payment, $objPayment);
+        }
+        $entity->setPayment($payment);
 
-        return entity;
+        return $entity;
     }
 
     function delete($id)
     {
         try {
-            $clientPaymentGym = new ClientPaymentGym();
             $this->repository->delete($id);
         } catch (QueryException $e) {
             return response()->json('Not ok', Response::HTTP_CREATED);

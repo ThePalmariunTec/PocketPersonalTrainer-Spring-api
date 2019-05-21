@@ -6,11 +6,13 @@ namespace App\DTO;
 
 class ClientPaymentGymDTO
 {
-    public $client_id;
+    public $id;
 
-    public $payment_id;
+    public $client;
+
+    public $payment;
 
     public $date_payment;
 
-    public $gym_id;
+    public $gym;
 }

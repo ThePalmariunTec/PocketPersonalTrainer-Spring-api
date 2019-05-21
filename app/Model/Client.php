@@ -3,12 +3,29 @@
 
 namespace App\Model;
 
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="client")
+ */
 class Client
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     */
     protected $id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Model\Person", mappedBy="person")
+     */
     protected $person;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Model\User", mappedBy="user")
+     */
 
     protected $user;
 
