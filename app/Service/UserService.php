@@ -96,7 +96,8 @@ class UserService implements BaseServiceInterface
 
     function search($dto)
     {
-        // TODO: Implement search() method.
+        $user = new User();
+        return $this->repository->findBy($this->userDTOtoEntity($dto, $user));
     }
 
     private function userDTOtoEntity(UserDTO $dto, User $entity): User
