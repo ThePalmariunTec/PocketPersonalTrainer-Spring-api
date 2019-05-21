@@ -11,4 +11,5 @@ interface CrudRepositoryInterface
     function delete($id);
     function findById($id);
     function findAll();
+    function  findBy($entity);
 }

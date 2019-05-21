@@ -76,4 +76,15 @@ class PaymentRepository implements PaymentRepositoryInterface
 
         return $qb->getQuery()->getResult();
     }
+
+    function findBy($entity)
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('c')
+            ->from($this->entityName, 'c')
+            ->where($entity);
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -12,6 +12,7 @@ use App\Repository\AddressRepository;
 use App\Repository\PersonRepository;
 use App\Service\Interfaces\PersonServiceInterface;
 use Carbon\Carbon;
+use Doctrine\ORM\Query\QueryException;
 use Illuminate\Http\Response;
 
 class PersonService implements PersonServiceInterface
@@ -28,29 +29,58 @@ class PersonService implements PersonServiceInterface
 
     function insert($dto)
     {
-        $person = new Person();
-        $this->repository->insert($this->personDTOtoPersonEntity($dto,$person));
+
+        try {
+            $person = new Person();
+            $this->repository->insert($this->personDTOtoPersonEntity($dto, $person));
+        } catch (QueryException $e) {
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
         return response()->json('ok', Response::HTTP_CREATED);
     }
 
-    function update($id, $entity)
+    function update($dto)
     {
-        // TODO: Implement update() method.
+        try {
+            $person = new Person();
+            $this->repository->update($this->personDTOtoPersonEntity($dto, $person));
+        } catch (QueryException $e) {
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+        return response()->json('ok', Response::HTTP_CREATED);
     }
 
     function findById($id)
     {
-        // TODO: Implement findById() method.
+        $obj =  $this->repository->findById($id);
+
+        $dto = new PersonDTO();
+
+        $dto->id = $obj->getId();
+        $dto->name = $obj->getName();
+        $dto->address = $obj->getAddress();
+        $dto->cpf = $obj->getCpf();
+        $dto->rg = $obj->getRg();
+        $dto->phone = $obj->getPhone();
+        $dto->birthday = $obj->getBirthday();
+
+        return $dto;
     }
 
     function findAll()
     {
         $objs =  $this->repository->findAllPersonsWithAddress();
         $dados = array();
+
         foreach ($objs as $obj){
             $dto = new PersonDTO();
             $dto->id = $obj->getId();
             $dto->name = $obj->getName();
+            $dto->address = $obj->getAddress();
+            $dto->cpf = $obj->getCpf();
+            $dto->rg = $obj->getRg();
+            $dto->phone = $obj->getPhone();
+            $dto->birthday = $obj->getBirthday();
 
             array_push($dados, $dto);
         }
@@ -58,9 +88,10 @@ class PersonService implements PersonServiceInterface
         return $dados;
     }
 
-    function search($parameters)
+    function search($dto)
     {
-        // TODO: Implement search() method.
+        $person = new Person();
+        return $this->repository->findBy($this->personDTOtoPersonEntity($dto,$person));
     }
 
     private function personDTOtoPersonEntity(PersonDTO $dto, Person $entity) : Person
@@ -80,4 +111,14 @@ class PersonService implements PersonServiceInterface
         return $entity;
     }
 
+    function delete($id)
+    {
+        try {
+            $this->repository->delete($id);
+
+        } catch (QueryException $e) {
+            return response()->json('Not ok', Response::HTTP_CREATED);
+        }
+        return response()->json('ok', Response::HTTP_CREATED);
+    }
 }

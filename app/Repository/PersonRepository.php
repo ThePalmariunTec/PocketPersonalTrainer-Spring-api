@@ -85,4 +85,9 @@ class PersonRepository implements PersonRepositoryInterface
 
         return $qb->getQuery()->getResult();
     }
+
+    function findBy($entity)
+    {
+        return $this->entityManager->find($this->entityName, $entity);
+    }
 }

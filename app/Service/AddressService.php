@@ -33,4 +33,9 @@ class AddressService implements AddressRepositoryInterface
     {
         // TODO: Implement search() method.
     }
+
+    function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
 }
