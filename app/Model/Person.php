@@ -44,6 +44,7 @@ class Person
      */
     protected $address;
 
+
     /**
      * @ORM\Column(name="birthday", type="date")
      */
@@ -52,12 +53,13 @@ class Person
     /**
      * @ORM\Column(name="height", type="decimal")
      */
-    protected $heigth;
+    protected $height;
 
     /**
      * @ORM\Column(name="weight", type="decimal")
      */
     protected $weight;
+
 
     public function __construct()
     {
@@ -179,17 +181,17 @@ class Person
     /**
      * @return mixed
      */
-    public function getHeigth()
+    public function getHeight()
     {
-        return $this->heigth;
+        return $this->height;
     }
 
     /**
-     * @param mixed $heigth
+     * @param mixed $height
      */
-    public function setHeigth($heigth): void
+    public function setHeight($height): void
     {
-        $this->heigth = $heigth;
+        $this->height = $height;
     }
 
     /**

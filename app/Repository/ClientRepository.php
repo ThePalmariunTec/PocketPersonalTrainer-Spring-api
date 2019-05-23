@@ -5,6 +5,7 @@ namespace App\Repository;
 
 
 use App\Model\Client;
+use App\Model\Person;
 use App\Repository\Interfaces\ClientRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\QueryException;
@@ -85,6 +86,17 @@ class ClientRepository implements ClientRepositoryInterface
         $qb->select('c')
             ->from($this->entityName, 'c')
             ->where($entity);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllClientsWithPersonAndUser()
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('p' , 'c')
+            ->from($this->entityName, 'c')
+            ->innerJoin('c.person', 'p');
 
         return $qb->getQuery()->getResult();
     }

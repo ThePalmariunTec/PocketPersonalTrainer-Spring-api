@@ -87,4 +87,15 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllEmployeeWithPersonAndUser(){
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('c','p','u')
+            ->from(Employee::class, 'c', 'p', 'u')
+            ->innerJoin('c.person', 'p')
+            ->innerJoin('c.user', 'u');
+
+        return $qb->getQuery()->getResult();
+    }
 }

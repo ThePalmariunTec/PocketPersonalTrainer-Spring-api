@@ -55,7 +55,7 @@ class GymService implements BaseServiceInterface
 
     function findAll()
     {
-        $objs = $this->repository->findAll();
+        $objs = $this->repository->findAllGymWithUser();
         $dados = array();
         foreach ($objs as $obj){
             $dto = new GymDTO();

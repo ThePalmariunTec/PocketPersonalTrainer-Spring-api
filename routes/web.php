@@ -11,9 +11,20 @@
 |
 */
 
-$router->group(['prefix' => 'api/person'], function () use($router){
-   $router->get('/list', 'Person\PersonController@findAll');
-   $router->post('/', 'Person\PersonController@insert');
+$router->group(['prefix' => 'api/personal'], function () use($router){
+    $router->get('/list', 'Person\PersonController@findAll');
+   $router->get('/clients', 'Client\ClientController@findAll');
+   $router->post('/addClient', 'Client\ClientController@insert');
+   $router->put('/client', 'Client\ClientController@update');
+    $router->get('/employees', 'Employee\EmployeeController@findAll');
+    $router->post('/addEmployee', 'Employee\EmployeeController@insert');
+    $router->put('/employee', 'Employee\EmployeeController@update');
+    $router->get('/gyms', 'Gym\GymController@findAll');
+    $router->post('/addGym', 'Gym\GymController@insert');
+    $router->put('/gym', 'Client\ClientController@update');
+    $router->get('/users', 'User\UserController@findAll');
+    $router->post('/addUser', 'User\UserController@insert');
+    $router->put('/user', 'User\UserController@update');
 });
 
 

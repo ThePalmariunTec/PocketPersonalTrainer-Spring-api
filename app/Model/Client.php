@@ -3,6 +3,7 @@
 
 namespace App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,21 +20,20 @@ class Client
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\Person", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Model\Person", mappedBy="id")
      */
     protected $person;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\User", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Model\User", mappedBy="client")
      */
-
     protected $user;
 
 
     public function __construct()
     {
-        $this->person = new Person();
-        $this->user = new User();
+        $this->person = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     /**

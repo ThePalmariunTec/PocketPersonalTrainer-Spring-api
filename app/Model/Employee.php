@@ -2,6 +2,7 @@
 
 
 namespace App\Model;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,15 +34,16 @@ class Employee
     protected $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\Person", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Model\Person")
+     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
     protected $person;
 
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->person = new Person();
+        $this->user = new ArrayCollection();
+        $this->person = new ArrayCollection();
     }
 
     /**

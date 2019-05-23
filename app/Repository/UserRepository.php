@@ -72,8 +72,8 @@ class UserRepository implements UserRepositoryInterface
     {
         $qb = $this->entityManager->createQueryBuilder();
 
-        $qb->select('c')
-            ->from($this->entityName, 'c');
+        $qb->select('u')
+            ->from($this->entityName, 'u');
 
         return $qb->getQuery()->getResult();
     }

@@ -20,7 +20,7 @@ class User
     /**
      * @ORM\Column(name="user_name", type="string")
      */
-    protected $userName;
+    protected $name;
 
     /**
      * @ORM\Column(name="password", type="string")
@@ -37,7 +37,7 @@ class User
     protected $roles;
 
     /**
-     * @ORM\ManyToOne(targetEntity="client",inversedBy="user", cascade={"persist", "merge", "remove"})
+     * @ORM\ManyToOne(targetEntity="client", inversedBy="user", cascade={"persist", "merge", "remove"})
      */
     protected $client;
     /**
@@ -69,17 +69,17 @@ class User
     /**
      * @return mixed
      */
-    public function getUserName()
+    public function getName()
     {
-        return $this->userName;
+        return $this->name;
     }
 
     /**
-     * @param mixed $userName
+     * @param mixed $name
      */
-    public function setUserName($userName): void
+    public function setUserName($name): void
     {
-        $this->userName = $userName;
+        $this->name = $name;
     }
 
     /**
@@ -128,54 +128,6 @@ class User
     public function setRoles($roles): void
     {
         $this->roles = $roles;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * @param mixed $client
-     */
-    public function setClient($client): void
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmployee()
-    {
-        return $this->employee;
-    }
-
-    /**
-     * @param mixed $employee
-     */
-    public function setEmployee($employee): void
-    {
-        $this->employee = $employee;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGym()
-    {
-        return $this->gym;
-    }
-
-    /**
-     * @param mixed $gym
-     */
-    public function setGym($gym): void
-    {
-        $this->gym = $gym;
     }
 
 }

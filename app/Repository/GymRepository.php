@@ -86,4 +86,14 @@ class GymRepository implements GymRepositoryInterface
 
         return $qb->getQuery()->getResult();
     }
+    public function findAllGymWithUser(){
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('g', 'u')
+            ->from(Gym::class, 'g', 'u')
+            ->innerJoin('c.person', 'p')
+            ->innerJoin('c.user', 'u');
+
+        return $qb->getQuery()->getResult();
+    }
 }

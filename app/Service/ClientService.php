@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\DTO\ClientDTO;
+use App\DTO\PersonDTO;
 use App\Model\Client;
 use App\Repository\ClientRepository;
 use App\Repository\PersonRepository;
@@ -57,7 +58,7 @@ class ClientService implements ClientServiceInterface
 
     function findAll()
     {
-        $objs = $this->repository->findAll();
+        $objs = $this->repository->findAllClientsWithPersonAndUser();
         $dados = array();
         foreach ($objs as $obj){
             $dto = new ClientDTO();

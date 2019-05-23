@@ -55,7 +55,7 @@ class EmployeeService  implements BaseServiceInterface
 
     function findAll()
     {
-        $objs = $this->repository->findAll();
+        $objs = $this->repository->findAllEmployeeWithPersonAndUser();
         $dados = array();
         foreach ($objs as $obj){
             $dto = new EmployeeDTO();
