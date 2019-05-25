@@ -6,7 +6,7 @@ namespace App\Model;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
- * @ORM\Table(name="person")
+ * @ORM\Table(name="user")
  */
 class User
 {
@@ -20,35 +20,18 @@ class User
     /**
      * @ORM\Column(name="user_name", type="string")
      */
-    protected $name;
+    protected $username;
 
     /**
      * @ORM\Column(name="password", type="string")
      */
     protected $password;
     /**
-     * @ORM\Column(name="email_id", type="integer")
+     * @ORM\Column(name="email", type="integer")
      */
     protected $email;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Model\Roles", mappedBy="user")
-     */
-    protected $roles;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="client", inversedBy="user", cascade={"persist", "merge", "remove"})
-     */
-    protected $client;
-    /**
-     * @ORM\ManyToOne(targetEntity="employee",inversedBy="user", cascade={"persist", "merge", "remove"})
-     */
-    protected $employee;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="gym",inversedBy="user", cascade={"persist", "merge", "remove"})
-     */
-    protected $gym;
 
     /**
      * @return mixed
@@ -69,17 +52,17 @@ class User
     /**
      * @return mixed
      */
-    public function getName()
+    public function getUserName()
     {
-        return $this->name;
+        return $this->username;
     }
 
     /**
      * @param mixed $name
      */
-    public function setUserName($name): void
+    public function setUserName($username): void
     {
-        $this->name = $name;
+        $this->username = $username;
     }
 
     /**
@@ -114,20 +97,5 @@ class User
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @param mixed $roles
-     */
-    public function setRoles($roles): void
-    {
-        $this->roles = $roles;
-    }
 
 }

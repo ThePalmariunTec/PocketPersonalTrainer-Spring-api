@@ -73,8 +73,9 @@ class ClientRepository implements ClientRepositoryInterface
     {
         $qb = $this->entityManager->createQueryBuilder();
 
-        $qb->select('c')
-            ->from($this->entityName, 'c');
+        $qb->select('p','c')
+            ->from($this->entityName, 'c')
+        ->innerJoin('c.person', 'p');
 
         return $qb->getQuery()->getResult();
     }

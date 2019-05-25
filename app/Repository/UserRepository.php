@@ -22,7 +22,7 @@ class UserRepository implements UserRepositoryInterface
 
     }
 
-    function insert($entity)
+    public function insert($entity)
     {
         $this->entityManager->beginTransaction();
         try {
@@ -36,7 +36,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
-    function update($entity)
+    public function update($entity)
     {
         $this->entityManager->beginTransaction();
         try {
@@ -49,7 +49,7 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    function delete($id)
+    public function delete($id)
     {
         $this->entityManager->beginTransaction();
         try {
@@ -63,12 +63,12 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    function findById($id)
+    public function findById($id)
     {
         return $this->entityManager->find($this->entityName, $id);
     }
 
-    function findAll()
+    public function findAll()
     {
         $qb = $this->entityManager->createQueryBuilder();
 
@@ -78,7 +78,7 @@ class UserRepository implements UserRepositoryInterface
         return $qb->getQuery()->getResult();
     }
 
-    function findBy($entity)
+    public function findBy($entity)
     {
         $qb = $this->entityManager->createQueryBuilder();
 
@@ -88,4 +88,18 @@ class UserRepository implements UserRepositoryInterface
 
         return $qb->getQuery()->getResult();
     }
+
+    public function login(string $username, string $password)
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('u')
+            ->from(User::class, 'u')
+            ->where('u.username = :username')
+            ->andWhere('u.password = :password')
+            ->setParameters(['username' => $username, 'password' => $password]);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+
 }

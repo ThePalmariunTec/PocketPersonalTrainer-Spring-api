@@ -28,12 +28,12 @@ class Gym
     protected $phone;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\Address", mappedBy="gym")
+     * @ORM\OneToOne(targetEntity="App\Model\Address", cascade={"persist", "merge", "remove"})
      */
     protected $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\Address", mappedBy="gym")
+     * @ORM\OneToOne(targetEntity="App\Model\User", cascade={"persist", "merge", "remove"})
      */
     protected $user;
 

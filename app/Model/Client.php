@@ -20,21 +20,15 @@ class Client
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Model\Person", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="App\Model\Person", cascade={"persist", "merge", "remove"})
      */
     protected $person;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\User", mappedBy="client")
+     * @ORM\OneToOne(targetEntity="App\Model\User", cascade={"persist", "merge","remove"})
      */
     protected $user;
 
-
-    public function __construct()
-    {
-        $this->person = new ArrayCollection();
-        $this->user = new ArrayCollection();
-    }
 
     /**
      * @return mixed

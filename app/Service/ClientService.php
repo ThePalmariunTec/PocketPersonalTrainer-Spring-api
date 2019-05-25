@@ -6,11 +6,15 @@ namespace App\Service;
 
 use App\DTO\ClientDTO;
 use App\DTO\PersonDTO;
+use App\Model\Address;
 use App\Model\Client;
+use App\Model\Person;
+use App\Model\User;
 use App\Repository\ClientRepository;
 use App\Repository\PersonRepository;
 use App\Repository\UserRepository;
 use App\Service\Interfaces\ClientServiceInterface;
+use Carbon\Carbon;
 use Doctrine\ORM\Query\QueryException;
 use Illuminate\Http\Response;
 
@@ -31,9 +35,10 @@ class ClientService implements ClientServiceInterface
 
     function insert($dto)
     {
+
         try {
-            $client = new Client();
-            $this->repository->insert($this->clientDTOtoEntity($dto, $client));
+            $client = $this->dtoToClient($dto);
+            $this->repository->insert($client);
         } catch (QueryException $e) {
             return response()->json('Not ok', Response::HTTP_CREATED);
         }
@@ -73,8 +78,7 @@ class ClientService implements ClientServiceInterface
 
     function search($dto)
     {
-        $client = new Client();
-        return $this->repository->findBy($this->clientDTOtoEntity($dto,$client));
+        return $this->repository->findBy($dto);
     }
 
     private function clientDTOtoEntity(ClientDTO $dto, Client $entity):Client{
@@ -106,5 +110,33 @@ class ClientService implements ClientServiceInterface
         }
 
         return response()->json('ok', Response::HTTP_CREATED);
+    }
+
+    private function dtoToClient($dto): Client{
+        $client = new Client();
+        $person = new Person();
+        $address = new Address();
+        $user = new User();
+
+        $address->setName($dto->person->address->name);
+        $address->setCity($dto->person->address->city);
+        $address->setUf($dto->person->address->uf);
+        $address->setZipcode($dto->person->address->zipcode);
+
+        $person->setName($dto->person->name);
+        $person->setRg($dto->person->rg);
+        $person->setCpf($dto->person->cpf);
+        $person->setPhone($dto->person->phone);
+        $person->setBirthDay(Carbon::parse($dto->person->birthday));
+        $person->setWeight($dto->person->weight);
+        $person->setHeight($dto->person->height);
+        $person->setAddress($address);
+        $user->setUserName($dto->user->userName);
+        $user->setEmail($dto->user->email);
+        $user->setPassword($dto->user->password);
+        $client->setPerson($person);
+        $client->setUser($user);
+
+        return $client;
     }
 }

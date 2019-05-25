@@ -34,11 +34,13 @@ use App\Service\Interfaces\ClientServiceInterface;
 use App\Service\Interfaces\EmployeeService;
 use App\Service\Interfaces\EmployeeServiceInterface;
 use App\Service\Interfaces\GymServiceInterface;
+use App\Service\Interfaces\LoginServiceInterface;
 use App\Service\Interfaces\PaymentServiceInterface;
 use App\Service\Interfaces\PersonServiceInterface;
 use App\Service\Interfaces\RolesServiceInterface;
 use App\Service\Interfaces\TrainServiceInterface;
 use App\Service\Interfaces\UserServiceInterface;
+use App\Service\LoginService;
 use App\Service\PaymentService;
 use App\Service\PersonService;
 use App\Service\RolesService;
@@ -65,6 +67,7 @@ class DependencyResolverServiceProvider extends ServiceProvider
         $this->rolesConfigSingleton();
         $this->paymentConfigSingleton();
         $this->clientPaymentGymSingleton();
+        $this->loginSingleton();
 
     }
 
@@ -112,9 +115,11 @@ class DependencyResolverServiceProvider extends ServiceProvider
         $this->app->singleton(PaymentRepositoryInterface::class, PaymentRepository::class);
         $this->app->singleton(PaymentServiceInterface::class, PaymentService::class);}
 
+    private function loginSingleton(){
+        $this->app->singleton(LoginServiceInterface::class, LoginService::class);
+    }
     private function clientPaymentGymSingleton(){
         $this->app->singleton(ClientPaymentGymRepositoryInterface::class, ClientPaymentGymRepository::class);
         $this->app->singleton(ClientPaymentGymServiceInterface::class, ClientPaymentGymService::class);}
-
 
 }

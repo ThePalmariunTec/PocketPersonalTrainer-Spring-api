@@ -40,15 +40,6 @@ class Address
      */
     protected $uf;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="person",inversedBy="address", cascade={"persist", "merge", "remove"})
-     */
-    protected $person;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="gym",inversedBy="address", cascade={"persist", "merge", "remove"})
-     */
-    protected $gym;
 
     /**
      * @return mixed

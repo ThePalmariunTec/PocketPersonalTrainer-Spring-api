@@ -18,8 +18,4 @@ class PersonDTO
     public $height;
     public $weight;
 
-    public function __construct()
-    {
-        $this->address = new ArrayCollection();
-    }
 }

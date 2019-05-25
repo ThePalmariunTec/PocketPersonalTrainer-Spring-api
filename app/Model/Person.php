@@ -40,7 +40,7 @@ class Person
     protected $phone;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Model\Address", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Model\Address", cascade={"persist", "merge", "remove"})
      */
     protected $address;
 
@@ -60,11 +60,6 @@ class Person
      */
     protected $weight;
 
-
-    public function __construct()
-    {
-        $this->address = new ArrayCollection();
-    }
 
     /**
      * @return mixed

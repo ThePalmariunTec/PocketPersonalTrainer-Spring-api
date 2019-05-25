@@ -5,7 +5,9 @@ namespace App\Service;
 
 
 use App\DTO\GymDTO;
+use App\Model\Address;
 use App\Model\Gym;
+use App\Model\User;
 use App\Repository\AddressRepository;
 use App\Repository\GymRepository;
 use App\Repository\UserRepository;
@@ -107,6 +109,27 @@ class GymService implements BaseServiceInterface
         $entity->setUser($user);
 
         return $entity;
+    }
 
+    private function dtoToGym($dto): Gym
+    {
+        $gym = new Gym();
+        $address = new Address();
+        $user = new User();
+
+        $address->setName($dto->person->address->name);
+        $address->setCity($dto->person->address->city);
+        $address->setUf($dto->person->address->uf);
+        $address->setZipcode($dto->person->address->zipcode);
+
+
+        $user->setUserName($dto->user->userName);
+        $user->setEmail($dto->user->email);
+        $user->setPassword($dto->user->password);
+        $gym->setAddress($address);
+        $gym->setUser($user);
+
+
+        return $gym;
     }
 }
