@@ -70,8 +70,10 @@ class GymRepository implements GymRepositoryInterface
     {
         $qb = $this->entityManager->createQueryBuilder();
 
-        $qb->select('c')
-            ->from($this->entityName, 'c');
+        $qb->select('g')
+            ->from($this->entityName, 'g')
+            ->innerJoin('g.address', 'a')
+            ->innerJoin('g.user', 'u');
 
         return $qb->getQuery()->getResult();
     }
